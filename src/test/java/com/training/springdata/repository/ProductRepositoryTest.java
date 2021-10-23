@@ -1,5 +1,7 @@
 package com.training.springdata.repository;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -47,6 +49,56 @@ public class ProductRepositoryTest {
 	@Test
 	public void testCount() {
 		System.out.println(productRepository.count());
+
+	}
+
+	@Test
+	public void testFindByName() {
+		List<Product> products = productRepository.findByName("iPhone");
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindByNameAndDescription() {
+		List<Product> products = productRepository.findByNameAndDescription("iPhone", "Smartphone");
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindByPriceGreaterThan() {
+		List<Product> products = productRepository.findByPriceGreaterThan(1000d);
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindByDescriptionContains() {
+		List<Product> products = productRepository.findByDescriptionContains("Smartphone");
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindByPriceBetween() {
+		// List<Product> products = productRepository.findByPriceBetween(1000d, 1200d);
+		List<Product> products = productRepository.findByPriceBetween(1000d, 2400d);
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindByDescriptionLike() {
+		List<Product> products = productRepository.findByDescriptionLike("%s%");
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindByIdIn() {
+		List<Product> products = productRepository.findByIdIn(Arrays.asList(1, 2, 3));
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
 
 	}
 }

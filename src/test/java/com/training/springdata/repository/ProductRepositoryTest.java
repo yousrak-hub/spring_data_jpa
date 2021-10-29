@@ -4,9 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.criterion.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.training.springdata.entities.Product;
 
@@ -17,7 +22,7 @@ public class ProductRepositoryTest {
 
 	@Test
 	public void testCreate() {
-		productRepository.save(new Product("iPhone", "Smartphone", 1300d));
+		productRepository.save(new Product("S20", "Smartphone", 6000d));
 	}
 
 	@Test
@@ -98,6 +103,37 @@ public class ProductRepositoryTest {
 	@Test
 	public void testFindByIdIn() {
 		List<Product> products = productRepository.findByIdIn(Arrays.asList(1, 2, 3));
+		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
+
+	}
+
+	@Test
+	public void testFindAllPaging() {
+		Page<Product> results = productRepository.findAll(PageRequest.of(0, 5));
+		results.forEach(p -> System.out.println(p.getId() + " " + p.getName()));
+
+	}
+
+	@Test
+	public void testFindAllSorting() {
+		Iterable<Product> results = productRepository.findAll(Sort.by(Direction.DESC, "name", "price"));
+		Iterable<Product> sortByMultipleOrders = productRepository
+				.findAll(Sort.by(new Sort.Order(Direction.DESC, "name"), new Sort.Order(Direction.ASC, "price")));
+//		results.forEach(p -> System.out.println(p.getId() + " " + p.getName() + " " + p.getDesc()));
+		sortByMultipleOrders.forEach(p -> System.out.println(p.getId() + " " + p.getName() + " " + p.getDesc()));
+
+	}
+
+	@Test
+	public void testFindAllPagingAndSorting() {
+		Iterable<Product> results = productRepository.findAll(PageRequest.of(0, 2, Direction.DESC, "name"));
+		results.forEach(p -> System.out.println(p.getId() + " " + p.getName() + " " + p.getDesc()));
+
+	}
+
+	@Test
+	public void testFindByIdInPaging() {
+		List<Product> products = productRepository.findByIdIn(Arrays.asList(1, 2, 3), PageRequest.of(0, 2));
 		products.forEach(p -> System.out.println(p.getId() + " " + p.getPrice()));
 
 	}

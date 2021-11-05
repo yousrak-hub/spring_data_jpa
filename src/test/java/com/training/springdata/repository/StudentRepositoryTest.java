@@ -7,8 +7,9 @@ import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
-
+import org.springframework.data.domain.Sort.Direction;
 import com.training.springdata.entities.Student;
 
 @SpringBootTest
@@ -18,7 +19,7 @@ public class StudentRepositoryTest {
 
 	@Test
 	public void testCreate() {
-		studentRepository.save(new Student("Linda", "Simon", 11));
+		studentRepository.save(new Student("Linda", "Adam", 11));
 	}
 
 	@Test
@@ -43,12 +44,17 @@ public class StudentRepositoryTest {
 	public void testFindStudentsByScores() {
 		System.out.println(studentRepository.findStudentsForGivenScores(14, 19));
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(false)
 	public void testDeleteByFirstName() {
 		studentRepository.deleteStudentsByFirstName("Yousra");
+	}
+
+	@Test
+	public void testFindAllStudentsPagingAndSorting() {
+		System.out.println(studentRepository.findAllStudents(PageRequest.of(0, 2, Direction.DESC, "id")));
 	}
 
 }

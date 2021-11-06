@@ -57,4 +57,14 @@ public class StudentRepositoryTest {
 		System.out.println(studentRepository.findAllStudents(PageRequest.of(0, 2, Direction.DESC, "id")));
 	}
 
+	@Test
+	public void testFindAllStudentsNativequery() {
+		System.out.println(studentRepository.findAllStudentsNativeQuery());
+	}
+
+	@Test
+	public void testFindByFirstNameNativeQuery() {
+		System.out.println(studentRepository.findAllStudentsByFirstName("Linda"));
+	}
+
 }

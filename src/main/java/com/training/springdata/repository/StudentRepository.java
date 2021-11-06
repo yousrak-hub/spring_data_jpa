@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import com.training.springdata.entities.Product;
 import com.training.springdata.entities.Student;
 
 public interface StudentRepository extends CrudRepository<Student, Integer> {
@@ -27,7 +28,14 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
 	@Modifying
 	@Query("delete from Student where firstName=:firstName")
 	void deleteStudentsByFirstName(@Param("firstName") String firstName);
-	
+
 	@Query("from Student")
 	List<Student> findAllStudents(Pageable pageable);
+
+	@Query(value = "select * from student", nativeQuery = true)
+	List<Student> findAllStudentsNativeQuery();
+
+	@Query(value = "select * from student where fname=:firstName", nativeQuery = true)
+	List<Product> findByFirstNameNativeQuery(@Param("firstName") String firstName);
+
 }
